@@ -65,18 +65,7 @@ class Game:
     def __init__(self):
         math_c = math_operations()
         player = Player()
-        print("Привет как тебя зовут? (хочешь выйти пиши - /stop)")
-        while True:
-            name = input()
-            if name =="/stop":
-                break
-            code_resp_name = player.change_name(name)
-            if code_resp_name == 200:
-                print(f"Удачной игры - {name}")
-                while True:
-                    operations = math_c.get_operations()
-                    print("выберите действие 1 - решать примеры, 2 - получить информацию по игроку , 3 - именить Имя игрока , 4 - выйти")
-                    choise = input()
-            elif code_resp_name == 400:
-                print("Введите корректное имя")
+        
+        
+        
             
