@@ -61,11 +61,20 @@ class Player:
             return 200
         else:
             return 400
+    def up_true_primers(self):
+        self.__true_primers += 1
+
+    def up_false_primers(self):
+        self.__false_primers += 1
+
+
+
 class Game:
     def __init__(self):
-        math_c = math_operations()
-        player = Player()
+        self.math_c = math_operations()
+        self.player_game = Player()
         self.__content = None
+
     def verify_name(self):
         with open('info.txt',"r",encoding="utf-8") as file:
             self.__content = file.read()
@@ -75,7 +84,12 @@ class Game:
             return 200
         elif name == "Unknown":
             return 400   
-        
+    def start(self):
+        status_name = self.verify_name()
+        if status_name == 200:
+             data_player = self.player_game.get_info()
+             while True:
+                print(f"Привет {data_player[0]}, выбери операцию что б начать 1 - решать примеры , 2 - узнать информацию по аккаунту , 3 - выйти")       
         
         
             
