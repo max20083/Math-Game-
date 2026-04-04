@@ -65,6 +65,16 @@ class Game:
     def __init__(self):
         math_c = math_operations()
         player = Player()
+        self.__content = None
+    def verify_name(self):
+        with open('info.txt',"r",encoding="utf-8") as file:
+            self.__content = file.read()
+        self.__content = self.__content.split(",")
+        name = self.__content[0]
+        if name != "Unknown":
+            return 200
+        elif name == "Unknown":
+            return 400   
         
         
         
