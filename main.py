@@ -35,8 +35,7 @@ class math_operations:
             }
         
     def get_random_primer(self):
-        self.primer = random.choice(self.__operations)
-        return self.primer
+        return random.choice(list(self.__operations.items()))
     
     def get_operations(self):
         return self.__operations
@@ -53,7 +52,7 @@ class Player:
         self.__money = content[3]
     
     def get_info(self):
-        return list(self.__true_primers,self.__false_primers,self.__money,self.__name)
+        return [self.__name,self.__true_primers,self.__false_primers,self.__money]
 
     def change_name(self,name_input):
         if name_input != "":
@@ -90,6 +89,33 @@ class Game:
              data_player = self.player_game.get_info()
              while True:
                 print(f"Привет {data_player[0]}, выбери операцию что б начать 1 - решать примеры , 2 - узнать информацию по аккаунту , 3 - выйти")       
-        
-        
+                user_choise = input()
+                if user_choise == "1":
+                    while True:
+                        primers = self.math_c.get_operations()
+                        primer = self.math_c.get_random_primer()[0]
+                        print(f"Пример - {primer} (Выйти с игры - /stop)")
+                        otvet = input()
+                        if otvet == "/stop":
+                            break
+                        try:
+                            otvet = int(otvet)
+                            if otvet == primers[primer]:
+                                up_money = random.randint(40,100)
+                                data_player[1] += 1
+                                data_player[3] += up_money 
+                                print(f"Ответ верный - баланс: {data_player[3]}(+{up_money})")
+                            else:
+                                del_money = random.randint(40,100)
+                                data_player[2] += 1
+                                data_player[3] -= del_money
+                                print(f"Ответ не верный - баланс: {data_player[3]}(-{del_money})")
+                        except:
+                              del_money = random.randint(40,100)
+                              data_player[2] += 1
+                              data_player[3] -= del_money
+                              print(f"Ответ не верный - баланс: {data_player[3]}(-{del_money})")
+if __name__ == "__main__":
+    start_game = Game()         
+    start_game.start()
             
