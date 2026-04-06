@@ -87,8 +87,9 @@ class Game:
         status_name = self.verify_name()
         if status_name == 200:
              data_player = self.player_game.get_info()
+             print(f"Привет {data_player[0]}")
              while True:
-                print(f"Привет {data_player[0]}, выбери операцию что б начать 1 - решать примеры , 2 - узнать информацию по аккаунту , 3 - выйти")       
+                print("выбери операцию что б начать 1 - решать примеры , 2 - узнать информацию по аккаунту , 3 - выйти")       
                 user_choise = input()
                 if user_choise == "1":
                     while True:
@@ -115,6 +116,11 @@ class Game:
                               data_player[2] += 1
                               data_player[3] -= del_money
                               print(f"Ответ не верный - баланс: {data_player[3]}(-{del_money})")
+                elif user_choise == "2":
+                    print(f"Никнейм - {data_player[0]}, Правильно решенные примеры - {data_player[1]}, Неправильно решенные примеры - {data_player[2]}, Баланс - {data_player[3]}")
+                elif user_choise == "3":
+                    print(f"Возвращайтесь {data_player[0]}!!")
+                    break
 if __name__ == "__main__":
     start_game = Game()         
     start_game.start()
