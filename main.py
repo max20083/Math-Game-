@@ -125,6 +125,10 @@ class Game:
                     print(f"Никнейм - {data_player[0]},\nПравильно решенные примеры - {data_player[1]},\nНеправильно решенные примеры - {data_player[2]},\nБаланс - {data_player[3]}")
                 elif user_choise == "3":
                     self.player_game.download_new_info(data_player[0],data_player[1],data_player[2],data_player[3])
+                    response_write_data = self.player_game.get_info()
+                    response_write_data[1],response_write_data[2],response_write_data[3] = str(response_write_data[1]), str(response_write_data[2]), str(response_write_data[3])
+                    with open("info.txt","w",encoding="utf-8") as file_insert:
+                        file_insert.write(",".join(response_write_data))
                     print(f"Возвращайтесь {data_player[0]}!!")
                     break
         elif status_name == 400:
@@ -142,12 +146,6 @@ class Game:
                             self.start()
                         else : 
                             print("Недопустимое Имя")
-    def __del__(self):
-        quit_player = Player()
-        content = quit_player.get_info()
-        content[1],content[2],content[3] = str(content[1]), str(content[2]), str(content[3])
-        content=",".join(content)
-        print(content)
             
 if __name__ == "__main__":
     start_game = Game()         
