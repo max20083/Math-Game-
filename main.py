@@ -65,7 +65,12 @@ class Player:
 
     def up_false_primers(self):
         self.__false_primers += 1
-
+    
+    def download_new_info(self,new_name,new_true,new_false,new_money):
+        self.__name = new_name
+        self.__true_primers = new_true
+        self.__false_primers = new_false
+        self.__money = new_money
 
 
 class Game:
@@ -85,8 +90,8 @@ class Game:
             return 400   
     def start(self):
         status_name = self.verify_name()
+        data_player = self.player_game.get_info()
         if status_name == 200:
-             data_player = self.player_game.get_info()
              print(f"Привет {data_player[0]}")
              while True:
                 print("выбери операцию что б начать 1 - решать примеры , 2 - узнать информацию по аккаунту , 3 - выйти")       
@@ -117,10 +122,33 @@ class Game:
                               data_player[3] -= del_money
                               print(f"Ответ не верный - баланс: {data_player[3]}(-{del_money})")
                 elif user_choise == "2":
-                    print(f"Никнейм - {data_player[0]}, Правильно решенные примеры - {data_player[1]}, Неправильно решенные примеры - {data_player[2]}, Баланс - {data_player[3]}")
+                    print(f"Никнейм - {data_player[0]},\nПравильно решенные примеры - {data_player[1]},\nНеправильно решенные примеры - {data_player[2]},\nБаланс - {data_player[3]}")
                 elif user_choise == "3":
+                    self.player_game.download_new_info(data_player[0],data_player[1],data_player[2],data_player[3])
                     print(f"Возвращайтесь {data_player[0]}!!")
                     break
+        elif status_name == 400:
+                    while status_name != 200:
+                        print("Введите ваш никнейм")
+                        name = input()
+                        name = name.strip()
+                        if name.strip() != "Unknown":
+                            status_name = self.player_game.change_name(name)
+                            data_player[0] = name
+                            with open("info.txt","w",encoding="utf-8") as file:
+                                data_player[1],data_player[2],data_player[3] = str(data_player[1]), str(data_player[2]), str(data_player[3])
+                                data_player = ",".join(data_player)
+                                file.write(data_player)
+                            self.start()
+                        else : 
+                            print("Недопустимое Имя")
+    def __del__(self):
+        quit_player = Player()
+        content = quit_player.get_info()
+        content[1],content[2],content[3] = str(content[1]), str(content[2]), str(content[3])
+        content=",".join(content)
+        print(content)
+            
 if __name__ == "__main__":
     start_game = Game()         
     start_game.start()
