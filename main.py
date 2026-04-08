@@ -55,7 +55,7 @@ class Player:
         return [self.__name,self.__true_primers,self.__false_primers,self.__money]
 
     def change_name(self,name_input):
-        if name_input != "" and name_input != "Unknown" and name_input != self.__name and "/,.!@#$%^&*()-=+" not in name_input and name_input != "/stop":
+        if name_input != "" and name_input != "Unknown" and name_input != self.__name and "," not in name_input and name_input != "/stop":
             self.__name = name_input
             return 200
         elif self.__name == name_input:
@@ -105,7 +105,7 @@ class Game:
                         primers = self.math_c.get_operations()
                         primer = self.math_c.get_random_primer()[0]
                         print(f"Пример - {primer} (Выйти с игры - /stop)")
-                        otvet = input()
+                        otvet = input().strip()
                         if otvet == "/stop":
                             break
                         try:
@@ -126,27 +126,28 @@ class Game:
                               data_player[3] -= del_money
                               print(f"Ответ не верный - баланс: {data_player[3]}(-{del_money})")
                 elif user_choise == "2":
-                    print(f"Никнейм - {data_player[0]},\nПравильно решенные примеры - {data_player[1]},\nНеправильно решенные примеры - {data_player[2]},\nБаланс - {data_player[3]}")
+                    print(f"\nНикнейм - {data_player[0]}\nПравильно решенные примеры - {data_player[1]}\nНеправильно решенные примеры - {data_player[2]}\nБаланс - {data_player[3]}\n")
                 elif user_choise == "3":
-                    user_name = input("Введите желаемый никнейм :").strip()
-                    status_code = self.player_game.change_name(user_name)
+                    status_code = 0
                     while status_code != 200:
+                        new_name = input("Введите желаемый никнейм (Выйти - /stop):").strip()
+                        status_code = self.player_game.change_name(new_name)
                         if status_code == 401:
-                            print("Никнейм не должен совпадать с предыдущим, Введите новый: (Выйти - /stop)")
-                            new_name = input().strip()
+                            print("Никнейм не должен совпадать с предыдущим, Введите новый: (Выйти - /stop)")                            
                             status_code = self.player_game.change_name(new_name)
                             if new_name == "/stop":
                                 break
 
                         elif status_code == 400:
                             print("Ошибка , введите корректный никнейм :  (Выйти - /stop)")
-                            new_name = input().strip()
                             status_code = self.player_game.change_name(new_name)
                             if new_name == "/stop":
                                 break
+                        elif status_code == 402:
+                            break
                     if status_code == 200:
-                        print(f"Ник изменен на : {user_name}")
-                        data_player[0] = user_name
+                        print(f"Ник изменен на : {new_name}")
+                        data_player[0] = new_name
                             
                 elif user_choise == "4":
                     self.player_game.download_new_info(data_player[0],data_player[1],data_player[2],data_player[3])
