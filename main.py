@@ -55,7 +55,7 @@ class Player:
         return [self.__name,self.__true_primers,self.__false_primers,self.__money]
 
     def change_name(self,name_input):
-        if name_input != "" and name_input != "Unknown" and name_input != self.__name and "," not in name_input and name_input != "/stop":
+        if name_input != "" and name_input != "Unknown" and name_input != self.__name and "," not in name_input and "/" not in name_input:
             self.__name = name_input
             return 200
         elif self.__name == name_input:
@@ -90,7 +90,7 @@ class Game:
         name = self.__content[0]
         if name != "Unknown":
             return 200
-        elif name == "Unknown":
+        elif name == "Unknown" or "/" in name or "," in name:
             return 400   
     def start(self):
         status_name = self.verify_name()
@@ -162,14 +162,15 @@ class Game:
                         print("Введите ваш никнейм")
                         name = input()
                         name = name.strip()
-                        if name.strip() != "Unknown":
-                            status_name = self.player_game.change_name(name)
+                        status_name = self.player_game.change_name(name)
+                        if status_name == 200:
                             data_player[0] = name
-                            with open("info.txt","w",encoding="utf-8") as file:
+                            with open("info.txt","w",encoding="utf-8") as f:
                                 data_player[1],data_player[2],data_player[3] = str(data_player[1]), str(data_player[2]), str(data_player[3])
                                 data_player = ",".join(data_player)
-                                file.write(data_player)
+                                f.write(data_player)
                             self.start()
+                           
                         else : 
                             print("Недопустимое Имя")
             
